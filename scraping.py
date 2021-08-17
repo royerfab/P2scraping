@@ -1,12 +1,15 @@
 from bs4 import BeautifulSoup
 import requests
 
+
 url ='http://books.toscrape.com/catalogue/william-shakespeares-star-wars-verily-a-new-hope-william-shakespeares-star-wars-4_871/index.html'
 response = requests.get(url)
+
 
 def image_url(image_url_relative):
     image_url_base = 'http://books.toscrape.com/'
     return image_url_base + image_url_relative.replace('../', '')
+
 
 def scraping_one_product(url):
     response = requests.get(url)
@@ -54,4 +57,6 @@ def scraping_one_product(url):
         return product_informations
     else:
         return {}
+
+
 scraping_one_product('http://books.toscrape.com/catalogue/william-shakespeares-star-wars-verily-a-new-hope-william-shakespeares-star-wars-4_871/index.html')
