@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import os
 import csv
-from scraping3_1_scraping_page import scraping_one_product
+from scraping import scraping_one_product
 
 
 url = 'http://books.toscrape.com/catalogue/category/books/historical-fiction_4/index.html'
