@@ -3,7 +3,7 @@ import requests
 import os
 
 
-os.mkdir('C:/Users/julie/PycharmProjects/pythonProject/Fichier_CSV')
+os.mkdir('C:/Users/julie/PycharmProjects/pythonProject/Fichier_CSP')
 
 
 #fonction reconstituant l'url de l'image à partir d'une url relative
