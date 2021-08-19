@@ -2,11 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import os
 import csv
-from scraping4_1_scraping_category import scraping_one_product
-
-
-url = 'http://books.toscrape.com/catalogue/category/books/historical-fiction_4/index.html'
-list_product_page = []
+from scraping import scraping_one_product
 
 
 #Fonction recréant l'url de chaque produit de la page à partir d'un url relatif
@@ -29,25 +25,10 @@ def create_csv(category, list_product_page):
             writer.writerow(element)
 
 
-#Fonction étendant le scraping des informations d'un produit à tous les produits de la page
-def scraping_page_category(url):
-    response = requests.get(url)
-
-    if response.ok:
-        soup = BeautifulSoup(response.content, 'html.parser')
-        products = soup.find_all("h3")
-        for product in products:
-            relative_link = product.find("a").get("href")
-            products_informations = scraping_one_product(book_url(relative_link))
-            list_product_page.append(products_informations)
-        print(list_product_page, 'dtu')
-    else:
-        print('La requête n a pas aboutie.b')
-
-
-#Fonction étendant le scraping des informations des produits de la page à toutes les pages de la catégorie
+#Fonction étendant le scraping des informations des produits à toutes les pages de la catégorie
 def scraping_all_category(url):
     response = requests.get(url)
+    list_product_category = []
     if response.ok:
         soup = BeautifulSoup(response.content, 'html.parser')
         page = soup.find("li", class_="current")
@@ -59,15 +40,30 @@ def scraping_all_category(url):
             while i <= page_number:
                 page_url = url.replace('index.html', 'page-' + str(i) + '.html')
                 i+=1
-                scraping_page_category(page_url)
+                response_2 = requests.get(page_url)
+                if response_2.ok:
+                    soup_2 = BeautifulSoup(response_2.content, 'html.parser')
+                    products = soup_2.find_all("h3")
+                    for product in products:
+                        relative_link = product.find("a").get("href")
+                        products_informations = scraping_one_product(book_url(relative_link))
+                        list_product_category.append(products_informations)
+                    print(list_product_category, 'dtu')
+                else:
+                    print('La requête n a pas abouti.')
             category_name = soup.find("h1").text
-            create_csv(category_name, list_product_page)
+            create_csv(category_name, list_product_category)
         else:
-            scraping_page_category(url)
-            category_name = soup.find("h1").text
-            create_csv(category_name, list_product_page)
+            if response.ok:
+                products = soup.find_all("h3")
+                for product in products:
+                    relative_link = product.find("a").get("href")
+                    products_informations = scraping_one_product(book_url(relative_link))
+                    list_product_category.append(products_informations)
+                category_name = soup.find("h1").text
+                create_csv(category_name, list_product_category)
+            else:
+                print('La requête n a pas abouti.a')
     else:
-        print('La requête n a pas aboutie.b')
+        print('La requête n a pas abouti.b')
 
-
-scraping_all_category('http://books.toscrape.com/catalogue/category/books/historical-fiction_4/index.html')
