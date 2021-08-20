@@ -48,7 +48,6 @@ def scraping_all_category(url):
                         relative_link = product.find("a").get("href")
                         products_informations = scraping_one_product(book_url(relative_link))
                         list_product_category.append(products_informations)
-                    print(list_product_category, 'dtu')
                 else:
                     print('La requête n a pas abouti.')
             category_name = soup.find("h1").text
