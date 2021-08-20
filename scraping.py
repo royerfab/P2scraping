@@ -14,6 +14,14 @@ def image_url(image_url_relative):
     return image_url_base + image_url_relative.replace('../', '')
 
 
+#Fonction corrigeant l'écriture des titres des produits
+def replaceMultiple(incorrect_title, toBeReplaces, newString):
+    for element in toBeReplaces:
+        if element in incorrect_title:
+            incorrect_title = incorrect_title.replace(element, newString)
+    return incorrect_title
+
+
 #Fonction téléchargeant l'image de chaque produit au sein d'une dossier
 def download_image(image_url, title):
     os.chdir('C:/Users/julie/PycharmProjects/pythonProject/Images')
@@ -32,11 +40,12 @@ def scraping_one_product(url):
         td = conteneur_td.find_all("td")
         product_page_url = url
         universal_product_code = td[0].text
-        title = soup.find("h1").text
+        incorrect_title = soup.find("h1").text
+        title = replaceMultiple(incorrect_title, [':', '/', ';', '*', '"','>', '?'], '')
         prices_including_taxes = td[3].text
         prices_excluding_taxes = td[2].text
         number = td[5].text
-        number_available = number[10:12]
+        number_available = replaceMultiple(number, ['In stock (', 'available)'], '')
         conteneur_p = soup.find("article", class_='product_page')
         p_description = conteneur_p.find_all("p")
         product_description = p_description[3].text
@@ -67,7 +76,6 @@ def scraping_one_product(url):
                                 'product_description': product_description, 'category': category,
                                 'review_rating': review_rating, 'image_url': url_image}
         download_image(url_image, title)
-        print(product_informations)
         return product_informations
     else:
         return {}

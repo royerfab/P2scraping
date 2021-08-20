@@ -63,7 +63,7 @@ def scraping_all_category(url):
                 category_name = soup.find("h1").text
                 create_csv(category_name, list_product_category)
             else:
-                print('La requête n a pas abouti.a')
+                print('La requête n a pas abouti.')
     else:
-        print('La requête n a pas abouti.b')
+        print('La requête n a pas abouti.')
 

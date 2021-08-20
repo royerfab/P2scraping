@@ -27,9 +27,8 @@ def scraping_website(url):
             url_relative = category.find("a").get("href")
             informations_categories = scraping_all_category(category_url(url_relative))
             list_category_page.append([informations_categories])
-        print(list_category_page, 'rt')
     else:
-        print('La requête n a pas abouti.c')
+        print('La requête n a pas abouti.')
 
 
 scraping_website(url)
