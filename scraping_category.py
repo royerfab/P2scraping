@@ -13,7 +13,7 @@ def book_url(relative_link):
 
 #Fonction intégrant dans un fichier csv les données recueillies
 def create_csv(category, list_product_page):
-    os.chdir('C:/Users/julie/PycharmProjects/pythonProject/Fichier_CSP')
+    os.chdir('C:/Users/julie/PycharmProjects/pythonProject/Fichier_CSV')
     with open(category + '.csv', 'w', encoding='utf-8') as f:
         writer = csv.DictWriter(f, delimiter=',', fieldnames=['product_page_url', 'universal_product_code',
                                                'title', 'prices_including_taxes',

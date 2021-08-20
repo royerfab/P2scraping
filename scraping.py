@@ -1,15 +1,25 @@
 from bs4 import BeautifulSoup
 import requests
 import os
+import urllib.request
 
 
-os.mkdir('C:/Users/julie/PycharmProjects/pythonProject/Fichier_CSP')
+os.mkdir('C:/Users/julie/PycharmProjects/pythonProject/Images')
+os.mkdir('C:/Users/julie/PycharmProjects/pythonProject/Fichier_CSV')
 
 
-#fonction reconstituant l'url de l'image à partir d'une url relative
+#Fonction reconstituant l'url de l'image à partir d'une url relative
 def image_url(image_url_relative):
     image_url_base = 'http://books.toscrape.com/'
     return image_url_base + image_url_relative.replace('../', '')
+
+
+#Fonction téléchargeant l'image de chaque produit au sein d'une dossier
+def download_image(image_url, title):
+    os.chdir('C:/Users/julie/PycharmProjects/pythonProject/Images')
+    f = open(title + ".jpg", 'wb')
+    f.write(urllib.request.urlopen(image_url).read())
+    f.close()
 
 
 #Fonction extrayant les informations d'une page produit avec BeautifulSoup, regroupées dans un dictionnaire
@@ -56,6 +66,7 @@ def scraping_one_product(url):
                                 'prices_excluding_taxes': prices_excluding_taxes, 'number_available': number_available,
                                 'product_description': product_description, 'category': category,
                                 'review_rating': review_rating, 'image_url': url_image}
+        download_image(url_image, title)
         print(product_informations)
         return product_informations
     else:
