@@ -21,12 +21,10 @@ def scraping_website(url):
         all_ul = conteneur_ul.find_all("ul")
         ul = all_ul[1]
         categories = ul.find_all("li")
-        list_category_page = []
 
         for category in categories:
             url_relative = category.find("a").get("href")
-            informations_categories = scraping_all_category(category_url(url_relative))
-            list_category_page.append([informations_categories])
+            scraping_all_category(category_url(url_relative))
     else:
         print('La requête n a pas abouti.')
 
